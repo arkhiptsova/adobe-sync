@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: esucc_adobe_sync
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=main
+      - SPRING_DATASOURCE_PASSWORD=main
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: adobe_sync_db
+    environment:
+      - POSTGRES_USER=main
+      - POSTGRES_PASSWORD=main
+    ports:
+      - "1040:5432"
+    hostname: 172.16.3.42
